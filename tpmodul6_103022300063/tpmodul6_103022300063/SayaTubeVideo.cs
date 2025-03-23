@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 public class SayaTubeVideo
 {
     private int id;
     private string title;
     private int playCount;
 
-    // Konstruktor
     public SayaTubeVideo(string videoTitle)
     {
+        if (videoTitle == null) throw new ArgumentNullException("Title tidak boleh null.");
+        if (videoTitle.Length > 100) throw new ArgumentException("Title maksimal 100 karakter.");
+
         playCount = 0;
 
         Random rand = new Random();
@@ -22,9 +21,19 @@ public class SayaTubeVideo
 
     public void IncreasePlayCount(int count)
     {
-        if (count > 0)
+        if (count > 10000000) throw new ArgumentException("Maksimal penambahan play count adalah 10.000.000.");
+        if (count < 0) throw new ArgumentException("Play count tidak boleh negatif.");
+
+        try
         {
-            playCount += count;
+            checked
+            {
+                playCount += count;
+            }
+        }
+        catch (OverflowException)
+        {
+            Console.WriteLine("Terjadi overflow pada play count.");
         }
     }
 
@@ -35,3 +44,5 @@ public class SayaTubeVideo
         Console.WriteLine("Play Count: " + playCount);
     }
 }
+
+
